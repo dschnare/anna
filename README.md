@@ -13,7 +13,7 @@ Anna is a file type agnostic static analyzer.
 Enumerate all assets referenced in a JavaScript source file. Any string literal
 of the form `('|")path/to/file.ext('|")` will be interpreted as an asset.
 
-    const Anna = require('anna')
+    const Anna = require('@dschnare/anna')
 
     Anna
       // Create an instance of Anna
