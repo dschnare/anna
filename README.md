@@ -75,7 +75,7 @@ file paths to the dependent files for common dependency import patterns.
 
 ## How the default asset resolution works
 
-Anna's builtin asset resolution works finding the physical file that can be
+Anna's builtin asset resolution works by finding the physical file that can be
 associated with each asset URL. Where asset URLs can be absolute like
 `/my-assets/file.ext` or relative like `my-assets/file.ext` or
 `../my-assets/file.ext` (remote URLs are ignored).
