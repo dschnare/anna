@@ -1,0 +1,39 @@
+{
+  "name": "@dschnare/anna",
+  "version": "1.0.0",
+  "description": "An file type agnostic static analyzer",
+  "main": "lib/index.js",
+  "scripts": {
+    "test": "mocha lib/**/*.test.js lib/*.test.js"
+  },
+  "keywords": [
+    "static",
+    "analysis",
+    "analyze",
+    "es2015",
+    "commonjs",
+    "vuejs"
+  ],
+  "author": "Darren Schnare <schnare.d@gmail.com>",
+  "license": "MIT",
+  "files": [
+    "lib",
+    "README.md"
+  ],
+  "repository": {
+    "url": "https://github.com/dschnare/anna",
+    "type": "git"
+  },
+  "bugs": {
+    "url": "https://github.com/dschnare/anna/issues"
+  },
+  "devDependencies": {
+    "@types/mocha": "^2.2.39",
+    "@types/node": "^7.0.5",
+    "mocha": "^3.2.0"
+  },
+  "dependencies": {},
+  "engines": {
+    "node": ">=6"
+  }
+}
