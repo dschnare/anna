@@ -1,7 +1,7 @@
 {
   "name": "@dschnare/anna",
   "version": "1.0.0",
-  "description": "An file type agnostic static analyzer",
+  "description": "Anna is a file type agnostic static analyzer",
   "main": "lib/index.js",
   "scripts": {
     "test": "mocha lib/**/*.test.js lib/*.test.js"
