@@ -61,7 +61,7 @@ file paths to the dependent files for common dependency import patterns.
       .use('deps.js', /\.(js|ts|coffee)$/, Anna.jsDependencies())
       // Match @import, less @import statements, stylus @require statements and
       // index styles.
-      .use('deps.css', /\.(css|less|sass|scss|stylus)/, Anna.cssDependencies())
+      .use('deps.css', /\.(css|less|sass|scss|styl)/, Anna.cssDependencies())
       .analyze([
         'src/components/Badge/index.js',
         'src/components/Badge/style.css'
