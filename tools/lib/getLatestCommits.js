@@ -11,7 +11,7 @@ module.exports = function getLatestCommits () {
         } else if (stderr) {
           reject(new Error(stderr))
         } else {
-          const parts = stdout.trim().split(/:::|#END#/).filter(Boolean)
+          const parts = stdout.trim().replace(/#END#$/, '').split(/:::|#END#/)
           const commits = parts.reduce((commits, part, p) => {
             if (p % 2 === 0) {
               return commits.concat({ subject: part.trim() })
