@@ -4,7 +4,8 @@
   "description": "Anna is a file type agnostic static analyzer",
   "main": "lib/index.js",
   "scripts": {
-    "test": "mocha lib/**/*.test.js lib/*.test.js"
+    "test": "mocha lib/**/*.test.js lib/*.test.js",
+    "release": "node tools/release --lightweight"
   },
   "keywords": [
     "static",
