@@ -5,7 +5,7 @@
   "main": "lib/index.js",
   "scripts": {
     "test": "mocha lib/**/*.test.js lib/*.test.js",
-    "release": "node tools/release --lightweight"
+    "release": "node tools/release --lightweight --updatePackage"
   },
   "keywords": [
     "static",

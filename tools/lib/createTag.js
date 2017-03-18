@@ -19,7 +19,7 @@ function call (cmd) {
   })
 }
 
-module.exports = function createTag ({ nextVersion =  null, lightweight = false } = {}) {
+module.exports = function createTag ({ nextVersion =  null, lightweight = false, updatePackage = false } = {}) {
   return getLatestCommits().then(commits => {
     let semverPart = 'patch'
 
@@ -36,6 +36,7 @@ module.exports = function createTag ({ nextVersion =  null, lightweight = false 
       : getLatestTag().then(tag => {
         return bumpVersion(tag, { semverPart })
       }).then(nextVersion => {
+        if (!updatePackage) return nextVersion
         const pkg = require(path.resolve('package.json'))
         if (pkg.version !== nextVersion) {
           pkg.version = nextVersion
