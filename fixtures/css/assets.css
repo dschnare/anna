@@ -1,0 +1,15 @@
+body {
+  background: url(/base/index.styl);
+}
+
+div {
+  background: url('/dir/base.less');
+}
+
+span {
+  background: url("/some/path/final.css");
+}
+
+div.hi {
+  background: url(nofile.css);
+}
