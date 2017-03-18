@@ -1,4 +1,5 @@
 const { exec } = require('child_process')
+const path = require('path')
 
 module.exports = function getLatestTag () {
   return new Promise((resolve, reject) => {
@@ -9,7 +10,7 @@ module.exports = function getLatestTag () {
       } else if (stderr) {
         reject(new Error(stderr))
       } else {
-        resolve(stdout.trim())
+        resolve(stdout.trim() || require(path.resolve('package.json')).version)
       }
     })
   })
