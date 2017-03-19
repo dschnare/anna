@@ -38,14 +38,14 @@ module.exports = function createTag ({ nextVersion =  null, lightweight = false,
       }).then(nextVersion => {
         if (!updatePackage) return nextVersion
         const pkg = require(path.resolve('package.json'))
-        if (pkg.version !== nextVersion) {
-          pkg.version = nextVersion
+        if (pkg.version !== nextVersion.replace(/^v/, '')) {
+          pkg.version = nextVersion.replace(/^v/, '')
           const jsonText = JSON.stringify(pkg, null, 2)
           fs.writeFileSync(path.resolve('package.json'), jsonText, 'utf8')
-          call('git add package.json').then(() => {
+          return call('git add package.json').then(() => {
             return call('git commit -m "chore(package): Bump version"')
           }).then(() => {
-            commits.push({ subject: 'chore(package): Bump version', body: '' })
+            commits.unshift({ subject: 'chore(package): Bump version', body: '' })
             return nextVersion
           })
         } else {
