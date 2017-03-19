@@ -9,7 +9,7 @@ module.exports = function parseSemver (versionStr) {
   prerelease = patch.indexOf('-') > 0 ? patch.split('-').pop() : ''
   patch = patch.split('-').shift()
 
-  majro = parseInt(major, 10)
+  major = parseInt(major, 10)
   minor = parseInt(minor, 10)
   patch = parseInt(patch, 10)
 

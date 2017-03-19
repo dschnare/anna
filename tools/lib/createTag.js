@@ -19,7 +19,7 @@ function call (cmd) {
   })
 }
 
-module.exports = function createTag ({ nextVersion =  null, lightweight = false, updatePackage = false } = {}) {
+module.exports = function createTag ({ nextVersion, lightweight, updatePackage, verbose } = {}) {
   return getLatestCommits().then(commits => {
     let semverPart = 'patch'
 
@@ -42,6 +42,7 @@ module.exports = function createTag ({ nextVersion =  null, lightweight = false,
           pkg.version = nextVersion.replace(/^v/, '')
           const jsonText = JSON.stringify(pkg, null, 2)
           fs.writeFileSync(path.resolve('package.json'), jsonText, 'utf8')
+          verbose && console.log('package.json version updated to', pkg.version)
           return call('git add package.json').then(() => {
             return call('git commit -m "chore(package): Bump version"')
           }).then(() => {
@@ -65,14 +66,7 @@ module.exports = function createTag ({ nextVersion =  null, lightweight = false,
             } else if (stderr) {
               reject(new Error(stderr))
             } else {
-              resolve({
-                version: nextVersion,
-                changelog: commits.map(commit => {
-                  return commit.subject + (
-                    commit.body ? '\n' + commit.body : ''
-                  )
-                }).join('\n\n')
-              })
+              resolve(nextVersion)
             }
           })
         })

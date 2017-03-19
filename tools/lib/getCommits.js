@@ -1,10 +1,12 @@
 const { exec } = require('child_process')
 const getLatestTag = require('./getLatestTag')
 
-module.exports = function getLatestCommits () {
-  return getLatestTag().then(tag => {
+module.exports = function getCommits (refBegin = '@latest-tag', refEnd = 'HEAD') {
+  return Promise.resolve(
+    refBegin === '@latest-tag' ? getLatestTag() : refBegin
+  ).then(refBegin => {
     return new Promise((resolve, reject) => {
-      const cmd = `git log ${tag}..HEAD --pretty=format:"%s:::%b#END#"`
+      const cmd = `git log ${refBegin}..${refEnd} --pretty=format:"%s:::%b#END#"`
       exec(cmd, { cwd: process.cwd() }, (error, stdout, stderr) => {
         if (error) {
           reject(error)

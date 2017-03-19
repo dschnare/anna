@@ -1,4 +1,5 @@
 const createTag = require('./lib/createTag')
+const getChangelog = require('./lib/getChangelog')
 
 if (require.main === module) {
   const args = process.argv.slice(2)
@@ -14,9 +15,16 @@ if (require.main === module) {
       : null
   }())
 
-  createTag({ nextVersion, lightweight, updatePackage }).then(result => {
-    console.log('Tag created', result.version)
-    console.log(result.changelog)
+  Promise.all([
+    getChangelog('@latest-tag', 'HEAD', { markdown: true }),
+    createTag({ nextVersion, lightweight, updatePackage, verbose: true })
+  ]).then(([ changelog, version ]) => {
+    console.log('Tag created', version)
+    // TODO: Create a reelase on GitHub using the REST API or use some other
+    // release management platform.
+    // NOTE: Ideally this step would be handled by a hook on GitHub that would
+    // be called when a new tag is created that matches "vM.m.p" string or
+    // something.
   }).catch(error => console.error(error))
 } else {
   console.log(
