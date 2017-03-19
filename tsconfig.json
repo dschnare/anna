@@ -9,6 +9,7 @@
     ]
   },
   "include": [
-    "lib/**/*.js"
+    "lib/**/*.js",
+    "tools/**/*.js"
   ]
 }
