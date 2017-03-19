@@ -1,9 +1,9 @@
 const { exec } = require('child_process')
 const fs = require('fs')
 const path = require('path')
-const getLatestCommits = require('./lib/getLatestCommits')
-const getLatestTag = require('./lib/getLatestTag')
-const bumpVersion = require('./lib/bumpVersion')
+const getLatestCommits = require('./getLatestCommits')
+const getLatestTag = require('./getLatestTag')
+const bumpVersion = require('./bumpVersion')
 
 function call (cmd) {
   return new Promise((resolve, reject) => {
