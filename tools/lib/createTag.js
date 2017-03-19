@@ -1,7 +1,7 @@
 const { exec } = require('child_process')
 const fs = require('fs')
 const path = require('path')
-const getLatestCommits = require('./getLatestCommits')
+const getCommits = require('./getCommits')
 const getLatestTag = require('./getLatestTag')
 const bumpVersion = require('./bumpVersion')
 
@@ -20,7 +20,7 @@ function call (cmd) {
 }
 
 module.exports = function createTag ({ nextVersion, lightweight, updatePackage, verbose } = {}) {
-  return getLatestCommits().then(commits => {
+  return getCommits().then(commits => {
     let semverPart = 'patch'
 
     if (commits.some(commit => /breaking change/i.test(commit.body))) {
