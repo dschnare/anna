@@ -4,10 +4,10 @@ const os = require('os')
 const exec = require('./exec')
 const createTag = require('./createTag')
 const getChangelog = require('./getChangelog')
-const getNextVersion = require('./getNextVersion')
+const getNextReleaseVersion = require('./getNextReleaseVersion')
 
 module.exports = function createReleaseTag ({ commit = 'HEAD', verbose } = {}) {
-  return getNextVersion().then(version => {
+  return getNextReleaseVersion().then(version => {
     const pkg = require(path.resolve('package.json'))
 
     if (pkg.version !== version.replace(/^v/, '')) {
