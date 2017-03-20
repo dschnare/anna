@@ -28,7 +28,7 @@ if (require.main === module) {
     const options = { message, updatePackage, verbose: true }
     return createTag(nextVersion, options).then(version => {
       console.log('Tag created', version)
-      console.log('Pushing tag...', version)
+      console.log('Pushing tag', version)
       return exec(`git push origin ${version}`).then(() => {
         console.log(`Tag ${version} pushed`)
       })
