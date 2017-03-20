@@ -36,5 +36,5 @@ module.exports = function bumpVersion (versionString, { semverPart = 'patch' } =
   return [
     `v${v.major}.${v.minor}.${v.patch}`,
     v.prerelease
-  ].join('-')
+  ].filter(Boolean).join('-')
 }

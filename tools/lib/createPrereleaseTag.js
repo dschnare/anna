@@ -5,7 +5,7 @@ const getLatestTag = require('./getLatestTag')
 const createTag = require('./createTag')
 
 module.exports = function createPrereleaseTag ({ commit = 'HEAD' } = {}) {
-  return getLatestTag().then(tag => {
+  return getLatestTag({ includeLightweightTags: true }).then(tag => {
     if (tag) return tag
     const pkgText = fs.readFileSync(path.resolve('package.json'), 'utf8')
     const pkg = JSON.parse(pkgText)
@@ -13,6 +13,6 @@ module.exports = function createPrereleaseTag ({ commit = 'HEAD' } = {}) {
   }).then(version => {
     return bumpVersion(version, { semverPart: 'prerelease' })
   }).then(version => {
-    return createTag(version, { message: version, commit })
+    return createTag(version, { commit })
   })
 }

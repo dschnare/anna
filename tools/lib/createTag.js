@@ -10,6 +10,6 @@ module.exports = function createTag (name, { message, commit = 'HEAD' } = {}) {
     )
   const cmd = [
     'git tag', messageOption, `${name} ${commit}`
-  ].join(' ')
+  ].filter(Boolean).join(' ')
   return exec(cmd).then(() => name).then(() => name)
 }
