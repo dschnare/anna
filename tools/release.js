@@ -79,13 +79,15 @@ if (require.main === module) {
     createTag({ nextVersion, lightweight, updatePackage, verbose: true })
   ]).then(([ changelog, version ]) => {
     console.log('Tag created', version)
-    console.log('pushing created tag')
+    console.log('Pushing tag', version)
     return Promise.all([
       call(`git push origin ${version}`)
     ]).then(() => {
+      console.log(`Tag ${version} pushed`)
       return [ changelog, version ]
     })
   }).then(([ changelog, version ]) => {
+    console.log('Creating release', version)
     return createRelease(version, changelog)
   }).then(result => {
     console.log(`Release ${result.name} created @`, result.url)
