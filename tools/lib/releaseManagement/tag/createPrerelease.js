@@ -1,6 +1,5 @@
 const readline = require('readline')
 const exec = require('../../exec')
-const semver = require('../../semver')
 const git = require('../../git')
 const getNextPrereleaseVersion = require('../version/nextPrerelease')
 
@@ -30,12 +29,12 @@ module.exports = function createPrereleaseTag (name = null, { commit = 'HEAD', v
     })
   })
   .then(() => {
-    verbose && console.log('Fetching remote refs so the latest tag is accurate')
-    return exec('git fetch origin').then(() => {
-      return name || getNextPrereleaseVersion({ commit })
-    })
-  }).then(version => {
-    return semver.bump(version, { semverPart: 'prerelease' })
+    return name || (function () {
+      verbose && console.log('Fetching remote refs so the latest tag is accurate')
+      return exec('git fetch origin').then(() => {
+        return getNextPrereleaseVersion({ commit })
+      })
+    }())
   }).then(version => {
     return git.tag.create(version, { commit })
   })

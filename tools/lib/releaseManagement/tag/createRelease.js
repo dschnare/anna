@@ -35,28 +35,29 @@ module.exports = function createReleaseTag (name = null, { commit = 'HEAD', verb
   .then(() => {
     verbose && console.log('Fetching remote refs so the latest tag is accurate')
     return exec('git fetch origin').then(() => {
-      return Promise.resolve(name || getNextReleaseVersion({ commit })).then(version => {
-        const pkg = require(path.resolve('package.json'))
+      return Promise.resolve(name || getNextReleaseVersion({ commit }))
+        .then(version => {
+          const pkg = require(path.resolve('package.json'))
 
-        if (pkg.version !== version.replace(/^v/, '')) {
-          const oldVersion = pkg.version
-          pkg.version = version.replace(/^v/, '')
+          if (pkg.version !== version.replace(/^v/, '')) {
+            const oldVersion = pkg.version
+            pkg.version = version.replace(/^v/, '')
 
-          const jsonText = JSON.stringify(pkg, null, 2)
-          fs.writeFileSync(path.resolve('package.json'), jsonText, 'utf8')
-          if (verbose) {
-            console.log(`package.json version updated from ${oldVersion} to ${version}`)
-          }
+            const jsonText = JSON.stringify(pkg, null, 2)
+            fs.writeFileSync(path.resolve('package.json'), jsonText, 'utf8')
+            if (verbose) {
+              console.log(`package.json version updated from ${oldVersion} to ${version}`)
+            }
 
-          return exec('git add package.json').then(() => {
-            return exec('git commit -m "chore(package): Bump version"')
-          }).then(() => {
+            return exec('git add package.json').then(() => {
+              return exec('git commit -m "chore(package): Bump version"')
+            }).then(() => {
+              return version
+            })
+          } else {
             return version
-          })
-        } else {
-          return version
-        }
-      })
+          }
+        })
     })
   }).then(version => {
     return getChangelog('@latest-tag', commit).then(changelog => {
