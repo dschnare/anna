@@ -1,7 +1,7 @@
-const getCommits = require('./getCommits')
+const git = require('../../git')
 
 module.exports = function getChangelog (refBegin = '@latest-tag', refEnd = 'HEAD', { terse, markdown } = {}) {
-  return getCommits(refBegin, refEnd).then(commits => {
+  return git.commit.range(refBegin, refEnd).then(commits => {
     const nl = markdown ? '\n' : ''
     if (terse) {
       return commits.map(commit => commit.subject).join('\n' + nl)

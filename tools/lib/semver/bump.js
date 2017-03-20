@@ -1,6 +1,6 @@
-const parseSemver = require('./parseSemver')
+const parseSemver = require('./parse')
 
-module.exports = function bumpVersion (versionString, { semverPart = 'patch' } = {}) {
+module.exports = function bump (versionString, { semverPart = 'patch' } = {}) {
   const version = parseSemver(versionString)
 
   switch (semverPart) {

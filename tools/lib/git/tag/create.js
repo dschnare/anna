@@ -1,5 +1,5 @@
 const fs = require('fs')
-const exec = require('./exec')
+const exec = require('../../exec')
 
 module.exports = function createTag (name, { message, commit = 'HEAD' } = {}) {
   const messageOption = message && fs.existsSync(message)

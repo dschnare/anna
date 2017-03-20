@@ -1,4 +1,4 @@
-module.exports = function parseSemver (versionStr) {
+module.exports = function parse (versionStr) {
   if (!versionStr) return { major: 0, minor: 0, patch: 0, prerelease: '' }
 
   let [ major, minor, ...patch ] = versionStr.split('.')

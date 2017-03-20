@@ -1,10 +1,10 @@
-const exec = require('./exec')
-const getLatestTag = require('./getLatestTag')
+const exec = require('../../exec')
+const { latest: latestTag } = require('../tag')
 
-module.exports = function getCommits (refBegin = '@latest-tag', refEnd = 'HEAD', { noMerges = true } = {}) {
+module.exports = function commitRange (refBegin = '@latest-tag', refEnd = 'HEAD', { noMerges = true } = {}) {
   return Promise.all([
-    refBegin === '@latest-tag' ? getLatestTag() : refBegin,
-    refEnd === '@latest-tag' ? getLatestTag() : refEnd
+    refBegin === '@latest-tag' ? latestTag() : refBegin,
+    refEnd === '@latest-tag' ? latestTag() : refEnd
   ]).then(([ refBegin, refEnd ]) => {
     const noMergesOption = noMerges ? '--no-merges' : ''
     const cmd = `git log ${refBegin}..${refEnd} ${noMergesOption} --pretty=format:"%s:::%b#END#"`

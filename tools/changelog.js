@@ -1,4 +1,4 @@
-const getChangelog = require('./lib/getChangelog')
+const releaseManagement = require('./lib/releaseManagement')
 
 if (require.main === module) {
   const args = process.argv.slice(2)
@@ -7,14 +7,14 @@ if (require.main === module) {
   const terse = args.includes('--terse')
   const markdown = args.includes('--markdown')
 
-  getChangelog(refBegin, refEnd, { terse, markdown }).then(changelog => {
+  releaseManagement.changelog.get(refBegin, refEnd, { terse, markdown }).then(changelog => {
     console.log(changelog)
   }).catch(error => console.error(error))
 } else {
   console.log(
     `Usage:
 
-    node tools/changelog [refBegin] [refEnd] [options]
+    node tools/changelog [refBegin refEnd] [options]
 
     Arguments:
     refBegin    An optional ref for the start of the commit range (default @latest-tag)

@@ -6,8 +6,9 @@
   "scripts": {
     "test": "mocha lib/**/*.test.js lib/*.test.js",
     "changelog": "node tools/changelog",
-    "pre-release": "node tools/prereleasetag",
-    "release": "node tools/releasetag"
+    "tag-edge": "node tools/tag",
+    "tag-prerelease": "node tools/tag --prerelease",
+    "tag-release": "node tools/tag --release"
   },
   "keywords": [
     "static",
