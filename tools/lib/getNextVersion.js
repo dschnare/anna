@@ -28,7 +28,7 @@ module.exports = function getNextVersion () {
       const pkgFile = path.resolve('package.json')
       const pkgText = fs.readFileSync(pkgFile, 'utf8')
       const pkg = JSON.parse(pkgText)
-      return pkg.version
+      return pkg.version.replace(/-.+$/, '')
     }
   })
 }

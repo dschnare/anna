@@ -6,7 +6,7 @@ module.exports = function parseSemver (versionStr) {
 
   major = major.replace(/^v/, '')
   patch = patch.join('.')
-  prerelease = patch.indexOf('-') > 0 ? patch.split('-').pop() : ''
+  prerelease = patch.indexOf('-') > 0 ? patch.substr(patch.indexOf('-') + 1) : ''
   patch = patch.split('-').shift()
 
   major = parseInt(major, 10)
