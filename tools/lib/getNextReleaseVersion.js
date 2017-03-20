@@ -4,8 +4,8 @@ const getCommits = require('./getCommits')
 const getLatestTag = require('./getLatestTag')
 const bumpVersion = require('./bumpVersion')
 
-function bumpTagVersion (tag) {
-  return getCommits().then(commits => {
+function bumpTagVersion (tag, refEnd = 'HEAD') {
+  return getCommits(tag, refEnd).then(commits => {
     let semverPart = 'patch'
 
     if (commits.some(commit => /breaking change/i.test(commit.body))) {
@@ -20,10 +20,10 @@ function bumpTagVersion (tag) {
   })
 }
 
-module.exports = function getNextVersion () {
+module.exports = function getNextVersion ({ commit = 'HEAD' } = {}) {
   return getLatestTag().then(tag => {
     if (tag) {
-      return bumpTagVersion(tag)
+      return bumpTagVersion(tag, commit)
     } else {
       const pkgFile = path.resolve('package.json')
       const pkgText = fs.readFileSync(pkgFile, 'utf8')

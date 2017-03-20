@@ -7,7 +7,7 @@ const getChangelog = require('./getChangelog')
 const getNextReleaseVersion = require('./getNextReleaseVersion')
 
 module.exports = function createReleaseTag ({ commit = 'HEAD', verbose } = {}) {
-  return getNextReleaseVersion().then(version => {
+  return getNextReleaseVersion({ commit }).then(version => {
     const pkg = require(path.resolve('package.json'))
 
     if (pkg.version !== version.replace(/^v/, '')) {
