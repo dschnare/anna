@@ -15,10 +15,10 @@ if (require.main === module) {
 
     node tools/releasetag
 
-    Will increment the previous tag's semver based on the commits affecting the
-    new tag. Also, if package.json has a version that does not equal the release
-    tag's version the pacakge.json is updated and the change is committed and
-    added to the changelog.
+    Will increment the previous annotated tag's name based on the commits
+    affecting the new tag. Also, if package.json has a version that does not
+    equal the release tag's version the pacakge.json is updated and the change
+    is committed and added to the changelog.
     `
   )
 }
