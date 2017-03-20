@@ -39,11 +39,14 @@ module.exports = function createReleaseTag ({ commit = 'HEAD', verbose } = {}) {
         const pkg = require(path.resolve('package.json'))
 
         if (pkg.version !== version.replace(/^v/, '')) {
+          const oldVersion = pkg.version
           pkg.version = version.replace(/^v/, '')
 
           const jsonText = JSON.stringify(pkg, null, 2)
           fs.writeFileSync(path.resolve('package.json'), jsonText, 'utf8')
-          verbose && console.log('package.json version updated to', pkg.version)
+          if (verbose) {
+            console.log(`package.json version updated from ${oldVersion} to ${version}`)
+          }
 
           return exec('git add package.json').then(() => {
             return exec('git commit -m "chore(package): Bump version"')
