@@ -8,8 +8,8 @@ if (require.main === module) {
   const release = args.includes('--release')
   const prerelease = args.includes('--prerelease')
   const name = (function () {
-    const k = args.find(arg => arg.startsWith('--name'))
-    return k >= 0 ? args[k].split('=')[0] || args[k + 1] : ''
+    const k = args.findIndex(arg => arg.startsWith('--name'))
+    return k >= 0 ? args[k].split('=')[1] || args[k + 1] : ''
   }())
 
   const createTag = prerelease
