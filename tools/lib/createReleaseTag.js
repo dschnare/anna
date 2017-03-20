@@ -5,26 +5,34 @@ const exec = require('./exec')
 const createTag = require('./createTag')
 const getChangelog = require('./getChangelog')
 const getNextReleaseVersion = require('./getNextReleaseVersion')
+const getCurrentBranch = require('./getCurrentBranch')
 
 module.exports = function createReleaseTag ({ commit = 'HEAD', verbose } = {}) {
-  return getNextReleaseVersion({ commit }).then(version => {
-    const pkg = require(path.resolve('package.json'))
+  return getCurrentBranch().then(branch => {
+    if (branch === 'master') return
+    return Promise.reject(new Error(
+      'Release tags can only be created from the master branch.'
+    ))
+  }).then(() => {
+    return getNextReleaseVersion({ commit }).then(version => {
+      const pkg = require(path.resolve('package.json'))
 
-    if (pkg.version !== version.replace(/^v/, '')) {
-      pkg.version = version.replace(/^v/, '')
+      if (pkg.version !== version.replace(/^v/, '')) {
+        pkg.version = version.replace(/^v/, '')
 
-      const jsonText = JSON.stringify(pkg, null, 2)
-      fs.writeFileSync(path.resolve('package.json'), jsonText, 'utf8')
-      verbose && console.log('package.json version updated to', pkg.version)
+        const jsonText = JSON.stringify(pkg, null, 2)
+        fs.writeFileSync(path.resolve('package.json'), jsonText, 'utf8')
+        verbose && console.log('package.json version updated to', pkg.version)
 
-      return exec('git add package.json').then(() => {
-        return exec('git commit -m "chore(package): Bump version"')
-      }).then(() => {
+        return exec('git add package.json').then(() => {
+          return exec('git commit -m "chore(package): Bump version"')
+        }).then(() => {
+          return version
+        })
+      } else {
         return version
-      })
-    } else {
-      return version
-    }
+      }
+    })
   }).then(version => {
     return getChangelog().then(changelog => {
       return { changelog, version }
