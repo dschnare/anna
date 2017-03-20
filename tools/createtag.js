@@ -22,13 +22,16 @@ if (require.main === module) {
           ? args[k + 1]
           : null)
       : null
-  }()) || getNextVersion()
+  }())
 
-  createTag(nextVersion, { message, updatePackage, verbose: true }).then(version => {
-    console.log('Tag created', version)
-    console.log('Pushing tag...', version)
-    return exec(`git push origin ${version}`).then(() => {
-      console.log(`Tag ${version} pushed`)
+  Promise.resolve(nextVersion || getNextVersion()).then(nextVersion => {
+    const options = { message, updatePackage, verbose: true }
+    return createTag(nextVersion, options).then(version => {
+      console.log('Tag created', version)
+      console.log('Pushing tag...', version)
+      return exec(`git push origin ${version}`).then(() => {
+        console.log(`Tag ${version} pushed`)
+      })
     })
   }).catch(error => console.error(error))
 } else {

@@ -7,7 +7,7 @@ module.exports = function getCommits (refBegin = '@latest-tag', refEnd = 'HEAD')
     refEnd === '@latest-tag' ? getLatestTag() : refEnd
   ]).then(([ refBegin, refEnd ]) => {
     const cmd = `git log ${refBegin}..${refEnd} --pretty=format:"%s:::%b#END#"`
-    exec(cmd).then(stdout => {
+    return exec(cmd).then(stdout => {
       const parts = stdout.trim().replace(/#END#$/, '').split(/:::|#END#/)
       return parts.reduce((commits, part, p) => {
         if (p % 2 === 0) {
