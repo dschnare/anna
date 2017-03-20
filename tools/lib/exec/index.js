@@ -7,7 +7,6 @@ module.exports = function (cmd, { cwd } = {}) {
       stdout = (stdout || '').trim()
 
       if (error) {
-        console.log('error.code', error.code)
         reject(stderr ? new Error(stderr) : error)
       } else {
         resolve(stdout)
