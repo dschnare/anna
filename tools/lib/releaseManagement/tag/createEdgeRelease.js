@@ -5,6 +5,7 @@ const git = require('../../git')
 const semver = require('../../semver')
 
 module.exports = function createEdgeReleaseTag (name = 'edge', { commit = 'HEAD', verbose } = {}) {
+  name = name || 'edge'
   return git.branch.current().then(branch => {
     if (branch === 'master') {
       return Promise.reject(new Error(

@@ -39,7 +39,7 @@ if (require.main === module) {
     commit        The commit to point the tag at (default HEAD)
 
     Options:
-    --name        The name given to the the tag when creating an edge tag
+    --name        The name given to the the tag when creating an edge tag (default latest-tag-name with prerelease bumped)
     --noPush      When set, the created tag will not be pushed
     --edge        Creates an edge tag (default)
     --release     Creates a release tag
