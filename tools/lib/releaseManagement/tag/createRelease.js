@@ -7,7 +7,7 @@ const git = require('../../git')
 const getChangelog = require('../changelog/get')
 const getNextReleaseVersion = require('../version/nextRelease')
 
-module.exports = function createReleaseTag ({ commit = 'HEAD', verbose } = {}) {
+module.exports = function createReleaseTag (name = null, { commit = 'HEAD', verbose } = {}) {
   return git.branch.current().then(branch => {
     if (branch === 'master') return
     return Promise.reject(new Error(
@@ -35,7 +35,7 @@ module.exports = function createReleaseTag ({ commit = 'HEAD', verbose } = {}) {
   .then(() => {
     verbose && console.log('Fetching remote refs so the latest tag is accurate')
     return exec('git fetch origin').then(() => {
-      return getNextReleaseVersion({ commit }).then(version => {
+      return Promise.resolve(name || getNextReleaseVersion({ commit })).then(version => {
         const pkg = require(path.resolve('package.json'))
 
         if (pkg.version !== version.replace(/^v/, '')) {
@@ -59,7 +59,7 @@ module.exports = function createReleaseTag ({ commit = 'HEAD', verbose } = {}) {
       })
     })
   }).then(version => {
-    return getChangelog().then(changelog => {
+    return getChangelog('@latest-tag', commit).then(changelog => {
       return { changelog, version }
     })
   }).then(({ changelog, version }) => {

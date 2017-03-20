@@ -16,10 +16,10 @@ if (require.main === module) {
     ? releaseManagement.tag.createPrerelease
     : (release
       ? releaseManagement.tag.createRelease
-      : releaseManagement.tag.createEdgeRelease.bind(undefined, name)
+      : releaseManagement.tag.createEdgeRelease
     )
 
-  createTag({ commit, verbose: true }).then(version => {
+  createTag(name, { commit, verbose: true }).then(version => {
     console.log('Tag created', version)
     if (!noPush) {
       console.log('Pushing tag', version)
@@ -39,7 +39,7 @@ if (require.main === module) {
     commit        The commit to point the tag at (default HEAD)
 
     Options:
-    --name        The name given to the the tag when creating an edge tag (default latest-tag-name with prerelease bumped)
+    --name        The name given to the the tag (if specified then overrides any automatic version bumping)
     --noPush      When set, the created tag will not be pushed
     --edge        Creates an edge tag (default)
     --release     Creates a release tag

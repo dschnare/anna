@@ -4,7 +4,7 @@ const semver = require('../../semver')
 const git = require('../../git')
 const getNextPrereleaseVersion = require('../version/nextPrerelease')
 
-module.exports = function createPrereleaseTag ({ commit = 'HEAD', verbose } = {}) {
+module.exports = function createPrereleaseTag (name = null, { commit = 'HEAD', verbose } = {}) {
   return git.branch.current().then(branch => {
     if (branch === 'develop') return
     return Promise.reject(new Error(
@@ -32,7 +32,7 @@ module.exports = function createPrereleaseTag ({ commit = 'HEAD', verbose } = {}
   .then(() => {
     verbose && console.log('Fetching remote refs so the latest tag is accurate')
     return exec('git fetch origin').then(() => {
-      return getNextPrereleaseVersion({ commit })
+      return name || getNextPrereleaseVersion({ commit })
     })
   }).then(version => {
     return semver.bump(version, { semverPart: 'prerelease' })
