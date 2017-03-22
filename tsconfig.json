@@ -6,10 +6,15 @@
     "allowJs": true,
     "lib": [
       "es2016"
+    ],
+    "typeRoots": [
+      "./",
+      "node_modules/@types"
     ]
   },
   "include": [
     "lib/**/*.js",
-    "tools/**/*.js"
+    "tools/**/*.js",
+    "types.d.ts"
   ]
 }

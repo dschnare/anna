@@ -1,6 +1,22 @@
 const exec = require('./lib/exec')
 const releaseManagement = require('./lib/releaseManagement')
 
+const usage =
+`Usage:
+
+node tools/tag [commit] [options]
+
+Arguments:
+commit        The commit to point the tag at (default HEAD)
+
+Options:
+--name        The name given to the the tag (if specified then overrides any automatic version bumping)
+--noPush      When set, the created tag will not be pushed
+--edge        Creates an edge tag (default)
+--release     Creates a release tag
+--prerelease  Creates a prerelease tag (i.e. release candidate)
+`
+
 if (require.main === module) {
   const args = process.argv.slice(2)
   const commit = args[0] && args[0][0] !== '-' ? args[0] : 'HEAD'
@@ -30,20 +46,5 @@ if (require.main === module) {
   })
   .catch(error => console.error(error))
 } else {
-  console.log(
-    `Usage:
-
-    node tools/tag [commit] [options]
-
-    Arguments:
-    commit        The commit to point the tag at (default HEAD)
-
-    Options:
-    --name        The name given to the the tag (if specified then overrides any automatic version bumping)
-    --noPush      When set, the created tag will not be pushed
-    --edge        Creates an edge tag (default)
-    --release     Creates a release tag
-    --prerelease  Creates a prerelease tag (i.e. release candidate)
-    `
-  )
+  console.log(usage)
 }

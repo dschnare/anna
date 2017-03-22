@@ -1,0 +1,6 @@
+- refactor out usage of makeRecursiveDependencyAnalyzer
+- all analyzers should have a 'kind' property set before registering with Anna
+- add section to README:
+  - analyzer result object must be an absolute file path or have the property
+    'fileName' that is an absolute file path in order for recursive analysis to
+    take place
