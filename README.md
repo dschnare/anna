@@ -4,7 +4,7 @@ Anna is a file type agnostic static analyzer.
 
 ## Installation
 
-    npm install dschnare/anna --save-dev
+    npm install @dschnare/anna --save-dev
 
 ## Quick Start
 
