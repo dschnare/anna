@@ -14,25 +14,6 @@ module.exports = function createReleaseTag (name = null, { commit = 'HEAD', verb
       'Release tags can only be created from the master branch.'
     ))
   }).then(() => {
-    return new Promise((resolve, reject) => {
-      const rl = readline.createInterface({
-        input: process.stdin,
-        output: process.stdout
-      })
-      rl.question('Have you merged your branch (usually develop) into master? [yes or no] ', answer => {
-        if (answer.trim().toLowerCase() === 'yes') {
-          resolve()
-        } else {
-          reject(new Error(
-            'Release tag aborted because you indicated that you have not ' +
-            'merged your changes into master'
-          ))
-        }
-        rl.close()
-      })
-    })
-  })
-  .then(() => {
     return name || (function () {
       verbose && console.log(
         'Fetching remote refs so the latest tag is accurate'
@@ -42,6 +23,26 @@ module.exports = function createReleaseTag (name = null, { commit = 'HEAD', verb
       })
     }())
   }).then(version => {
+    return new Promise((resolve, reject) => {
+      const rl = readline.createInterface({
+        input: process.stdin,
+        output: process.stdout
+      })
+      console.log('Tag to be created:', version)
+      rl.question('Have you merged your branch (usually develop) into master and tested? [yes, no, abort] ', answer => {
+        if (['y', 'yes'].includes(answer.trim().toLowerCase())) {
+          resolve()
+        } else {
+          reject(new Error(
+            'Release tag aborted because you indicated that you have not ' +
+            'merged your changes into master'
+          ))
+        }
+        rl.close()
+      })
+    }).then(() => version)
+  })
+  .then(version => {
     const pkg = require(path.resolve('package.json'))
 
     if (pkg.version !== version.replace(/^v/, '')) {

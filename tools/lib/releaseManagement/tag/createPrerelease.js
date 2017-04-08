@@ -10,12 +10,20 @@ module.exports = function createPrereleaseTag (name = null, { commit = 'HEAD', v
       'Prerelease tags can only be created from the develop branch.'
     ))
   }).then(() => {
+    return name || (function () {
+      verbose && console.log('Fetching remote refs so the latest tag is accurate')
+      return exec('git fetch origin').then(() => {
+        return getNextPrereleaseVersion({ commit })
+      })
+    }())
+  }).then(version => {
     return new Promise((resolve, reject) => {
       const rl = readline.createInterface({
         input: process.stdin,
         output: process.stdout
       })
-      rl.question('Have you merged master into develop? [yes or no] ', answer => {
+      console.log('Tag to be created:', version)
+      rl.question('Have you merged upstream changes from master into develop? [yes, no, abort] ', answer => {
         if (answer.trim().toLowerCase() === 'yes') {
           resolve()
         } else {
@@ -26,16 +34,9 @@ module.exports = function createPrereleaseTag (name = null, { commit = 'HEAD', v
         }
         rl.close()
       })
-    })
+    }).then(() => version)
   })
-  .then(() => {
-    return name || (function () {
-      verbose && console.log('Fetching remote refs so the latest tag is accurate')
-      return exec('git fetch origin').then(() => {
-        return getNextPrereleaseVersion({ commit })
-      })
-    }())
-  }).then(version => {
+  .then(version => {
     return dry ? version : git.tag.create(version, { commit })
   })
 }

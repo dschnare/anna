@@ -22,7 +22,7 @@ if (require.main === module) {
   const args = process.argv.slice(2)
   const commit = args[0] && args[0][0] !== '-' ? args[0] : 'HEAD'
   const dry = args.includes('--dry')
-  const noPush = args.includes('--nopush')
+  const noPush = dry || args.includes('--nopush')
   const release = args.includes('--release')
   const prerelease = args.includes('--prerelease')
   const name = (function () {
@@ -39,7 +39,7 @@ if (require.main === module) {
     )
 
   createTag(name, { commit, verbose: true, dry }).then(version => {
-    console.log(`Tag ${version} created`)
+    console.log(`Tag ${version} created`, dry ? '[dry run]' : '')
     if (noPush) {
       console.log(`Not pushing ${version} tag`)
     } else {
