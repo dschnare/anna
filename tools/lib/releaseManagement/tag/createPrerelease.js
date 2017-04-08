@@ -3,7 +3,7 @@ const exec = require('../../exec')
 const git = require('../../git')
 const getNextPrereleaseVersion = require('../version/nextPrerelease')
 
-module.exports = function createPrereleaseTag (name = null, { commit = 'HEAD', verbose } = {}) {
+module.exports = function createPrereleaseTag (name = null, { commit = 'HEAD', verbose, dry } = {}) {
   return git.branch.current().then(branch => {
     if (branch === 'develop') return
     return Promise.reject(new Error(
@@ -36,6 +36,6 @@ module.exports = function createPrereleaseTag (name = null, { commit = 'HEAD', v
       })
     }())
   }).then(version => {
-    return git.tag.create(version, { commit })
+    return dry ? version : git.tag.create(version, { commit })
   })
 }

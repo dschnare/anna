@@ -4,7 +4,7 @@ const exec = require('../../exec')
 const git = require('../../git')
 const semver = require('../../semver')
 
-module.exports = function createEdgeReleaseTag (prereleaseName = 'edge', { commit = 'HEAD', verbose } = {}) {
+module.exports = function createEdgeReleaseTag (prereleaseName = 'edge', { commit = 'HEAD', verbose, dry } = {}) {
   prereleaseName = (prereleaseName || 'edge').replace(/\d+$/, '')
   return git.branch.current().then(branch => {
     if (branch === 'master') {
@@ -26,6 +26,6 @@ module.exports = function createEdgeReleaseTag (prereleaseName = 'edge', { commi
     return semver.bump(version, { semverPart: 'prerelease' })
       .replace(/-\w+?(\d+)$/, '-' + prereleaseName + '$1')
   }).then(version => {
-    return git.tag.create(version, { commit })
+    return dry ? version : git.tag.create(version, { commit })
   })
 }

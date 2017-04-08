@@ -11,7 +11,8 @@ commit        The commit to point the tag at (default HEAD)
 
 Options:
 --name        The name given to the the tag (if specified then overrides any automatic version bumping)
---noPush      When set, the created tag will not be pushed
+--dry         When set, no tag will created
+--nopush      When set, the created tag will not be pushed
 --edge        Creates an edge tag (default)
 --release     Creates a release tag
 --prerelease  Creates a prerelease tag (i.e. release candidate)
@@ -20,7 +21,8 @@ Options:
 if (require.main === module) {
   const args = process.argv.slice(2)
   const commit = args[0] && args[0][0] !== '-' ? args[0] : 'HEAD'
-  const noPush = args.includes('--noPush')
+  const dry = args.includes('--dry')
+  const noPush = args.includes('--nopush')
   const release = args.includes('--release')
   const prerelease = args.includes('--prerelease')
   const name = (function () {
@@ -30,15 +32,18 @@ if (require.main === module) {
 
   const createTag = prerelease
     ? releaseManagement.tag.createPrerelease
-    : (release
-      ? releaseManagement.tag.createRelease
-      : releaseManagement.tag.createEdgeRelease
+    : (
+      release
+        ? releaseManagement.tag.createRelease
+        : releaseManagement.tag.createEdgeRelease
     )
 
-  createTag(name, { commit, verbose: true }).then(version => {
-    console.log('Tag created', version)
-    if (!noPush) {
-      console.log('Pushing tag', version)
+  createTag(name, { commit, verbose: true, dry }).then(version => {
+    console.log(`Tag ${version} created`)
+    if (noPush) {
+      console.log(`Not pushing ${version} tag`)
+    } else {
+      console.log(`Pushing ${version} tag`)
       return exec(`git push origin ${version}`).then(() => {
         console.log(`Tag ${version} pushed`)
       })

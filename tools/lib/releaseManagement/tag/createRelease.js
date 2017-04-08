@@ -7,7 +7,7 @@ const git = require('../../git')
 const getChangelog = require('../changelog/get')
 const getNextReleaseVersion = require('../version/nextRelease')
 
-module.exports = function createReleaseTag (name = null, { commit = 'HEAD', verbose } = {}) {
+module.exports = function createReleaseTag (name = null, { commit = 'HEAD', verbose, dry } = {}) {
   return git.branch.current().then(branch => {
     if (branch === 'master') return
     return Promise.reject(new Error(
@@ -83,11 +83,25 @@ module.exports = function createReleaseTag (name = null, { commit = 'HEAD', verb
       })
     })
   }).then(({ changelogFile, version }) => {
-    return git.tag.create(version, { message: changelogFile, commit })
-      .then(() => ({ changelogFile, version }))
+    if (dry) {
+      return { changelogFile, version }
+    } else {
+      return git.tag.create(version, { message: changelogFile, commit })
+        .then(() => ({ changelogFile, version }))
+    }
   }).then(({ changelogFile, version }) => {
-    return new Promise((resolve, reject) => {
+    let p = Promise.resolve()
+    if (dry && verbose) {
+      p = new Promise((resolve, reject) => {
+        fs.readFile(changelogFile, 'utf8', (error, text) => {
+          error ? reject(error) : resolve(text)
+        })
+      }).then(changelog => {
+        console.log('Release Changelog:\n', changelog, '\n')
+      })
+    }
+    return p.then(() => new Promise((resolve, reject) => {
       fs.unlink(changelogFile, error => error ? reject(error) : resolve())
-    }).then(() => version)
+    })).then(() => version)
   })
 }
