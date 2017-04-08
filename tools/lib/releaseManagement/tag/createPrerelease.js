@@ -37,6 +37,7 @@ module.exports = function createPrereleaseTag (name = null, { commit = 'HEAD', v
     }).then(() => version)
   })
   .then(version => {
+    // Create a lightweight tag for prereleases.
     return dry ? version : git.tag.create(version, { commit })
   })
 }

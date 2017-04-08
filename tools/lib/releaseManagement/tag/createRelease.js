@@ -87,6 +87,7 @@ module.exports = function createReleaseTag (name = null, { commit = 'HEAD', verb
     if (dry) {
       return { changelogFile, version }
     } else {
+      // Create an annotated tag for releases.
       return git.tag.create(version, { message: changelogFile, commit })
         .then(() => ({ changelogFile, version }))
     }
