@@ -2,6 +2,8 @@ body {
   background: url(/base/index.styl);
 }
 
+/* url('somefile.jpg'); */
+
 div {
   background: url('/dir/base.less');
 }
