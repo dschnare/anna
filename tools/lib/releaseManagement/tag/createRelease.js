@@ -59,6 +59,7 @@ module.exports = function createReleaseTag (name = null, { commit = 'HEAD', verb
 
       return exec('git add package.json').then(() => {
         return exec('git commit -m "chore(package): Bump version"')
+          .then(() => exec('git push origin master'))
       }).then(() => {
         verbose && console.log('Pushed package.json change')
         return version
